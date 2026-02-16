@@ -1,10 +1,10 @@
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from logging import Logger, getLogger, INFO, basicConfig
-import uuid, argparse, uvicorn
+import argparse, uvicorn
 
 
 basicConfig(
