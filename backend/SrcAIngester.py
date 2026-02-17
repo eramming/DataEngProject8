@@ -1,5 +1,4 @@
 from Ingester import Ingester
-import requests
 
 
 class SrcAIngester(Ingester):
@@ -14,10 +13,7 @@ class SrcAIngester(Ingester):
         raise NotImplementedError()
     
     def helperA(self) -> None:
-        # response = requests.get("https://pokeapi.co/api/v2/pokemon/pikachu")
-        response = requests.get("https://api.sportmonks.com/v3/football/schedules/seasons/23690/teams/62?api_token={TOKEN}")
-        data = response.json()
-        print(f"Rangers 24/25 Szn Length: {len(data)}")
+        raise NotImplementedError()
     
     def helperB(self) -> None:
         raise NotImplementedError()
