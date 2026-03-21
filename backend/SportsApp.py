@@ -5,7 +5,8 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from logging import Logger, getLogger, INFO, basicConfig
 import argparse, uvicorn
-
+from IngestPipeline import IngestPipeline
+from PostgresClient import PostgresClient
 
 basicConfig(
     level=INFO,  # root level
@@ -21,14 +22,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+
+pg_client: PostgresClient = PostgresClient()
 
 
 @app.get("/")
-def read_root():
+def index():
     return FileResponse(FRONTEND_DIR / "index.html")
 
+
+@app.get("/venues")
+def venues():
+    return pg_client.get_venues()
 
 
 def run (host: str = "127.0.0.1", port: int = 8000, reload: bool = True) -> None:
@@ -40,4 +46,7 @@ if __name__ == "__main__":
     parser.add_argument("--port", "-p", type=int, default=8000, help="Port to Serve on")
     parser.add_argument("--no-reload", action="store_true", help="Disable auto-reload")
     args = parser.parse_args()
+
+    IngestPipeline().ingest_all()
+
     run(host=args.host, port=args.port, reload= not args.no_reload)
