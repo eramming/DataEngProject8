@@ -30,5 +30,13 @@ class IngestPipeline:
     def initialize(self) -> None:
         with open(INIT_SQL_FILE, "r") as f:
             sql: str = f.read()
+            print(f"Schema creation sql: {sql}")
             self.cur.execute(sql)
             self.conn.commit()
+
+
+def main() -> None:
+    IngestPipeline().ingest_all()
+
+if __name__ == "__main__":
+    main()

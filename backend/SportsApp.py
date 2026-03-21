@@ -5,7 +5,6 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from logging import Logger, getLogger, INFO, basicConfig
 import argparse, uvicorn
-from IngestPipeline import IngestPipeline
 from PostgresClient import PostgresClient
 
 basicConfig(
@@ -46,7 +45,5 @@ if __name__ == "__main__":
     parser.add_argument("--port", "-p", type=int, default=8000, help="Port to Serve on")
     parser.add_argument("--no-reload", action="store_true", help="Disable auto-reload")
     args = parser.parse_args()
-
-    IngestPipeline().ingest_all()
 
     run(host=args.host, port=args.port, reload= not args.no_reload)

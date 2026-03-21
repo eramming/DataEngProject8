@@ -3,6 +3,7 @@ from typing import override
 from Ingester import Ingester
 import io
 import pandas as pd
+from psycopg2.extras import RealDictCursor
 
 
 VENUES_CREATE: str = "sql/venues_create.sql"
@@ -18,13 +19,14 @@ class VenueIngester(Ingester):
     @override
     def ingest(self) -> None:
         response = requests.get(self.url)
-        payload: pd.DataFrame = self.transform_data(response.content)
+        payload: pd.DataFrame = self.transform_data(response.content.decode("utf-8"))
         self.load_into_pg(payload)
         self.conn.close()
         
 
     def transform_data(self, data_str: str) -> pd.DataFrame:
         df: pd.DataFrame = pd.read_csv(io.StringIO(data_str))
+        print(df.head())
         df = df.drop(columns=["stadium_capacity", "joined", "head_coach",
                          "url", "wikipedia_url", "logo_url"])
         df = df.rename({"latitude": "lat", "longitude": "lon"})
@@ -39,6 +41,14 @@ class VenueIngester(Ingester):
         payload.to_csv(buffer, index=False, header=True)
         buffer.seek(0)
         with open(VENUES_INSERT, 'r') as f:
-            self.cur.copy_expert(VENUES_INSERT, buffer)
+            self.cur.copy_expert(f.read(), buffer)
         self.conn.commit()
     
+
+if __name__ == "__main__":
+    ing = VenueIngester()
+    ing.ingest()
+    with ing.conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute("SELECT * FROM mls_analysis.venues")
+        data = cur.fetchall()
+        print(data)

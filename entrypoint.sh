@@ -6,6 +6,8 @@
 set -eu
 
 
+python
+
 # gunicorn is the "production" level version of uvicorn.
 # It allows _multiple_ concurrent event loops handled by workers
 # running on different available CPUs

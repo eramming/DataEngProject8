@@ -1,5 +1,5 @@
 from Ingester import Ingester
-
+from typing import override
 
 class SrcAIngester(Ingester):
 
@@ -7,6 +7,7 @@ class SrcAIngester(Ingester):
         super().__init__()
 
 
+    @override
     def ingest(self) -> None:
         self.helperA()
         self.helperB()
