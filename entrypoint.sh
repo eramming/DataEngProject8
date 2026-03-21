@@ -6,7 +6,7 @@
 set -eu
 
 
-python
+python ingest/ingest_pipeline.py
 
 # gunicorn is the "production" level version of uvicorn.
 # It allows _multiple_ concurrent event loops handled by workers
