@@ -1,1 +1,1 @@
-CREATE SCHEMA mls_analysis;
+CREATE SCHEMA IF NOT EXISTS mls_analysis;
