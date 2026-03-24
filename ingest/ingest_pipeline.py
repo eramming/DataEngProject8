@@ -19,6 +19,7 @@ class IngestPipeline:
         self.cur = self.conn.cursor()
         self.ingesters: List[Ingester] = []
         self.ingesters.append(VenueIngester())
+        self.ingesters.append(GameIngester())
 
 
     def ingest_all(self) -> None:
