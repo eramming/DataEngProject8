@@ -9,7 +9,7 @@ class Ingester(ABC):
             dbname="jhu",
             user="jhu",
             password="jhu123",
-            host="localhost",
+            host="postgres",
             port="5432"
         )
         self.cur = self.conn.cursor()

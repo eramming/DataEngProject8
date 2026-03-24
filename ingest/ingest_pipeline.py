@@ -1,10 +1,13 @@
 from VenueIngester import VenueIngester
+from CensusIngester import CensusIngester
 from typing import List
 from Ingester import Ingester
 import psycopg2
+from pathlib import Path
 
 
-INIT_SQL_FILE = "sql/initialize.sql"
+BASE_DIR = Path(__file__).resolve().parent.parent
+INIT_SQL_FILE = BASE_DIR / "sql" / "initialize.sql"
 
 class IngestPipeline:
 
@@ -13,13 +16,13 @@ class IngestPipeline:
             dbname="jhu",
             user="jhu",
             password="jhu123",
-            host="localhost",
+            host="postgres",
             port="5432"
         )
         self.cur = self.conn.cursor()
         self.ingesters: List[Ingester] = []
         self.ingesters.append(VenueIngester())
-
+        self.ingesters.append(CensusIngester())
 
     def ingest_all(self) -> None:
         self.initialize()

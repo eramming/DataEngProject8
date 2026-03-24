@@ -1,7 +1,13 @@
 import requests
 from typing import override
 from Ingester import Ingester
+import io
 import pandas as pd
+from psycopg2.extras import RealDictCursor
+
+
+CENSUS_CREATE: str = "sql/census_create.sql"
+CENSUS_INSERT: str = "sql/census_insert.sql"
 
 
 class CensusIngester(Ingester):
@@ -17,55 +23,17 @@ class CensusIngester(Ingester):
     @override
     def ingest(self) -> None:
         response = requests.get(self.url)
+        response.raise_for_status()
 
         payload: pd.DataFrame = self.transform_data(response.json())
 
-        
         print(payload.head())
         print(f"Rows: {len(payload)}")
 
-        # TODO:
-        # We will need to join tables based on city-state pairs.
-        # Note that in its current form, there is a place type
-        # at the end of the place name. E.g., "town" or "city".
-        # You'll have to get rid of that.
-        # Here's an example:
-        mask = payload["city"].str.contains("Kansas")
-        print(f"\nExample of unwanted place qualifiers:\n{payload.iloc[mask]}")
-      
-        # TODO:
-        # You are attempting to insert values into the census table, but you
-        # haven't created a census table. So, it will fail.
-        # You have to first create the census table.
-        # Also, please place the table in the mls_analysis schema by writing mls_analysis.census
-        # instead of just census. That will keep our mls data nicely compartmentalized.
-        with self.conn.cursor() as cur:
-            for _, row in payload.iterrows():
-                cur.execute("""
-                    INSERT INTO census (
-                        city,
-                        state,
-                        state_code,
-                        population,
-                        median_income,
-                        education,
-                        median_age,
-                        unemployment
-                    )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                    ON CONFLICT (city, state_code) DO NOTHING;
-                """, (
-                    row["city"],
-                    row["state"],
-                    row["state_code"],
-                    row["population"],
-                    row["median_income"],
-                    row["education"],
-                    row["median_age"],
-                    row["unemployment"]
-                ))
+        mask = payload["city"].str.contains("Kansas", case=False, na=False)
+        print(f"\nExample of cleaned census rows:\n{payload.loc[mask].head()}")
 
-        self.conn.commit()
+        self.load_into_pg(payload)
         self.conn.close()
 
     def transform_data(self, data_json) -> pd.DataFrame:
@@ -73,6 +41,7 @@ class CensusIngester(Ingester):
         data = data_json[1:]
 
         df = pd.DataFrame(data, columns=columns)
+
         df.rename(columns={
             "state": "state_code",
             "place": "city_code",
@@ -85,9 +54,24 @@ class CensusIngester(Ingester):
 
         split_cols = df["NAME"].str.split(",", n=1, expand=True)
         df["city"] = split_cols[0].str.strip()
-        df["state"] = split_cols[1].str.strip() if split_cols.shape[1] > 1 else ""
+        df["state"] = split_cols[1].str.strip()
 
+        # remove place qualifiers so future joins on city/state work better
+        df["city"] = df["city"].str.replace(r"\s+(city|town|village|borough|CDP|municipality)$", "", regex=True)
+        df["city"] = df["city"].str.replace(r"\s+(metro township|unified government)$", "", regex=True)
 
+        numeric_cols = [
+            "population",
+            "median_income",
+            "education",
+            "median_age",
+            "unemployment"
+        ]
+        for col in numeric_cols:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+        df = df.dropna(subset=["city", "state", "state_code"])
+        df = df.drop_duplicates(subset=["city", "state_code"])
 
         return df[[
             "city",
@@ -100,6 +84,25 @@ class CensusIngester(Ingester):
             "unemployment"
         ]]
 
+    def load_into_pg(self, payload: pd.DataFrame) -> None:
+        with open(CENSUS_CREATE, "r") as f:
+            sql: str = f.read()
+            self.cur.execute(sql)
+
+        buffer = io.StringIO()
+        payload.to_csv(buffer, index=False, header=True)
+        buffer.seek(0)
+
+        with open(CENSUS_INSERT, "r") as f:
+            self.cur.copy_expert(f.read(), buffer)
+
+        self.conn.commit()
+
 
 if __name__ == "__main__":
-    CensusIngester().ingest()   
+    ing = CensusIngester()
+    ing.ingest()
+    with ing.conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute("SELECT * FROM mls_analysis.census LIMIT 10")
+        data = cur.fetchall()
+        print(data)

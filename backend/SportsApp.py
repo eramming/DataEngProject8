@@ -8,7 +8,7 @@ import argparse, uvicorn
 from PostgresClient import PostgresClient
 
 basicConfig(
-    level=INFO,  # root level
+    level=INFO,
 )
 LOG: Logger = getLogger(__name__)
 LOG.setLevel(INFO)
@@ -16,7 +16,7 @@ LOG.setLevel(INFO)
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 app = FastAPI()
 app.add_middleware(
-    CORSMiddleware, 
+    CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,7 +36,12 @@ def venues():
     return pg_client.get_venues()
 
 
-def run (host: str = "127.0.0.1", port: int = 8000, reload: bool = True) -> None:
+@app.get("/census")
+def census():
+    return pg_client.get_census()
+
+
+def run(host: str = "127.0.0.1", port: int = 8000, reload: bool = True) -> None:
     uvicorn.run(app, host=host, port=port, reload=reload)
 
 if __name__ == "__main__":
@@ -46,4 +51,4 @@ if __name__ == "__main__":
     parser.add_argument("--no-reload", action="store_true", help="Disable auto-reload")
     args = parser.parse_args()
 
-    run(host=args.host, port=args.port, reload= not args.no_reload)
+    run(host=args.host, port=args.port, reload=not args.no_reload)
