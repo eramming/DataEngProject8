@@ -17,7 +17,7 @@ WORKDIR /opt/${APPNAME}
 COPY --chown=1001:0 . .
 # Files are not executable when copied. We must add that permission.
 USER 0
-RUN chmod +x entrypoint.sh
+RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh
 USER 1001
 
 # Install Python packages
