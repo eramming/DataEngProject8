@@ -1,6 +1,7 @@
 from VenueIngester import VenueIngester
 from typing import List
 from Ingester import Ingester
+from GameIngester import GameIngester
 import psycopg2
 
 
