@@ -2,6 +2,7 @@ from VenueIngester import VenueIngester
 from CensusIngester import CensusIngester
 from typing import List
 from Ingester import Ingester
+from GameIngester import GameIngester
 import psycopg2
 from pathlib import Path
 
@@ -23,6 +24,8 @@ class IngestPipeline:
         self.ingesters: List[Ingester] = []
         self.ingesters.append(VenueIngester())
         self.ingesters.append(CensusIngester())
+        self.ingesters.append(GameIngester())
+
 
     def ingest_all(self) -> None:
         self.initialize()
