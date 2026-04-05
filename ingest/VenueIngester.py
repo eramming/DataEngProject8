@@ -6,8 +6,8 @@ import pandas as pd
 from psycopg2.extras import RealDictCursor
 
 
-VENUES_CREATE: str = "sql/venues_create.sql"
-VENUES_INSERT: str = "sql/venues_insert.sql"
+VENUES_CREATE = "ingest/sql/venues_create.sql"
+VENUES_INSERT = "ingest/sql/venues_insert.sql"
 
 class VenueIngester(Ingester):
 

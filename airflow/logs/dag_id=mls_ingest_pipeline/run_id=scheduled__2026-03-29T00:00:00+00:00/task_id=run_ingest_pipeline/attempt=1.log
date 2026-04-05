@@ -1,0 +1,57 @@
+[2026-04-05T05:09:05.926+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-04-05T05:09:05.936+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: mls_ingest_pipeline.run_ingest_pipeline scheduled__2026-03-29T00:00:00+00:00 [queued]>
+[2026-04-05T05:09:05.938+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: mls_ingest_pipeline.run_ingest_pipeline scheduled__2026-03-29T00:00:00+00:00 [queued]>
+[2026-04-05T05:09:05.938+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2026-04-05T05:09:05.941+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): run_ingest_pipeline> on 2026-03-29 00:00:00+00:00
+[2026-04-05T05:09:05.942+0000] {standard_task_runner.py:64} INFO - Started process 60 to run task
+[2026-04-05T05:09:05.943+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'mls_ingest_pipeline', 'run_ingest_pipeline', 'scheduled__2026-03-29T00:00:00+00:00', '--job-id', '2', '--raw', '--subdir', 'DAGS_FOLDER/mls_ingest_dag.py', '--cfg-path', '/tmp/tmpc6lnhfiy']
+[2026-04-05T05:09:05.944+0000] {standard_task_runner.py:91} INFO - Job 2: Subtask run_ingest_pipeline
+[2026-04-05T05:09:05.961+0000] {task_command.py:426} INFO - Running <TaskInstance: mls_ingest_pipeline.run_ingest_pipeline scheduled__2026-03-29T00:00:00+00:00 [running]> on host a8955310113e
+[2026-04-05T05:09:05.990+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='rohan' AIRFLOW_CTX_DAG_ID='mls_ingest_pipeline' AIRFLOW_CTX_TASK_ID='run_ingest_pipeline' AIRFLOW_CTX_EXECUTION_DATE='2026-03-29T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-03-29T00:00:00+00:00'
+[2026-04-05T05:09:05.990+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-04-05T05:09:06.002+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-04-05T05:09:06.002+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/sportsapp && python3 ingest/ingest_pipeline.py']
+[2026-04-05T05:09:06.004+0000] {subprocess.py:86} INFO - Output:
+[2026-04-05T05:09:07.225+0000] {subprocess.py:93} INFO - Schema creation sql: CREATE SCHEMA IF NOT EXISTS mls_analysis;
+[2026-04-05T05:09:07.226+0000] {subprocess.py:93} INFO -                 team  ...                                           logo_url
+[2026-04-05T05:09:07.227+0000] {subprocess.py:93} INFO - 0  Atlanta United FC  ...  https://upload.wikimedia.org/wikipedia/en/thum...
+[2026-04-05T05:09:07.228+0000] {subprocess.py:93} INFO - 1          Austin FC  ...  https://upload.wikimedia.org/wikipedia/en/thum...
+[2026-04-05T05:09:07.230+0000] {subprocess.py:93} INFO - 2        CF Montréal  ...  https://upload.wikimedia.org/wikipedia/en/thum...
+[2026-04-05T05:09:07.230+0000] {subprocess.py:93} INFO - 3       Charlotte FC  ...  https://upload.wikimedia.org/wikipedia/en/thum...
+[2026-04-05T05:09:07.230+0000] {subprocess.py:93} INFO - 4    Chicago Fire FC  ...  https://upload.wikimedia.org/wikipedia/commons...
+[2026-04-05T05:09:07.231+0000] {subprocess.py:93} INFO - 
+[2026-04-05T05:09:07.231+0000] {subprocess.py:93} INFO - [5 rows x 12 columns]
+[2026-04-05T05:09:07.231+0000] {subprocess.py:93} INFO - Traceback (most recent call last):
+[2026-04-05T05:09:07.231+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/ingest_pipeline.py", line 48, in <module>
+[2026-04-05T05:09:07.231+0000] {subprocess.py:93} INFO -     main()
+[2026-04-05T05:09:07.231+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/ingest_pipeline.py", line 45, in main
+[2026-04-05T05:09:07.231+0000] {subprocess.py:93} INFO -     IngestPipeline().ingest_all()
+[2026-04-05T05:09:07.232+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/ingest_pipeline.py", line 33, in ingest_all
+[2026-04-05T05:09:07.232+0000] {subprocess.py:93} INFO -     ingester.ingest()
+[2026-04-05T05:09:07.232+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/VenueIngester.py", line 23, in ingest
+[2026-04-05T05:09:07.232+0000] {subprocess.py:93} INFO -     self.load_into_pg(payload)
+[2026-04-05T05:09:07.232+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/VenueIngester.py", line 37, in load_into_pg
+[2026-04-05T05:09:07.232+0000] {subprocess.py:93} INFO -     with open(VENUES_CREATE, 'r') as f:
+[2026-04-05T05:09:07.234+0000] {subprocess.py:93} INFO -          ^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-04-05T05:09:07.235+0000] {subprocess.py:93} INFO - FileNotFoundError: [Errno 2] No such file or directory: 'sql/venues_create.sql'
+[2026-04-05T05:09:07.278+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2026-04-05T05:09:07.278+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-04-05T05:09:07.285+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 243, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-04-05T05:09:07.286+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=mls_ingest_pipeline, task_id=run_ingest_pipeline, run_id=scheduled__2026-03-29T00:00:00+00:00, execution_date=20260329T000000, start_date=20260405T050905, end_date=20260405T050907
+[2026-04-05T05:09:07.290+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 2 for task run_ingest_pipeline (Bash command failed. The command returned a non-zero exit code 1.; 60)
+[2026-04-05T05:09:07.317+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2026-04-05T05:09:07.324+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-04-05T05:09:07.324+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
