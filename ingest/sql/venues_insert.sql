@@ -6,6 +6,7 @@ CREATE TEMP TABLE staging_venues (
     lat REAL,
     lon REAL,
     stadium TEXT NOT NULL
+    capacity INTEGER
 );
 
 COPY staging_venues (team, city, state, lat, lon, stadium)

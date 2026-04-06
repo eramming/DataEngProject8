@@ -27,9 +27,13 @@ class VenueIngester(Ingester):
     def transform_data(self, data_str: str) -> pd.DataFrame:
         df: pd.DataFrame = pd.read_csv(io.StringIO(data_str))
         print(df.head())
-        df = df.drop(columns=["stadium_capacity", "joined", "head_coach",
-                         "url", "wikipedia_url", "logo_url"])
-        df = df.rename({"latitude": "lat", "longitude": "lon"})
+        df = df.drop(columns=["joined", "head_coach", "url", 
+                         "wikipedia_url", "logo_url"])
+        df = df.rename({
+            "latitude": "lat", 
+            "longitude": "lon",
+            "stadium_capacity": "capacity"
+            })
         return df
 
     

@@ -13,14 +13,25 @@ class PostgresClient:
             port="5432"
         )
 
-    def get_venues(self) -> list:
+    def _fetch_all(self, query: str) -> list:
         with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("SELECT * FROM mls_analysis.venues")
-            data = cur.fetchall()
-        return data
+            cur.execute(query)
+            return cur.fetchall()
+
+    def get_venues(self) -> list:
+        return self._fetch_all("SELECT * FROM mls_analysis.venues")
 
     def get_census(self) -> list:
-        with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("SELECT * FROM mls_analysis.census LIMIT 100")
-            data = cur.fetchall()
-        return data
+        return self._fetch_all("SELECT * FROM mls_analysis.census LIMIT 100")
+
+    def get_seasons(self) -> list:
+        return self._fetch_all("SELECT * FROM mls_analysis.seasons")
+
+    def get_teams(self) -> list:
+        return self._fetch_all("SELECT * FROM mls_analysis.teams")
+
+    def get_games(self) -> list:
+        return self._fetch_all("SELECT * FROM mls_analysis.games")
+
+    def get_game_teams(self) -> list:
+        return self._fetch_all("SELECT * FROM mls_analysis.game_teams")

@@ -4,15 +4,6 @@ CREATE TABLE IF NOT EXISTS mls_analysis.seasons (
     season_type TEXT
 );
 
-CREATE TABLE IF NOT EXISTS mls_analysis.time (
-    time_id INT PRIMARY KEY,
-    game_date DATE,
-    year INT,
-    month INT,
-    day INT,
-    weekday TEXT
-);
-
 CREATE TABLE IF NOT EXISTS mls_analysis.teams (
     team_id INT PRIMARY KEY,
     team_name TEXT,
@@ -21,9 +12,9 @@ CREATE TABLE IF NOT EXISTS mls_analysis.teams (
 
 CREATE TABLE IF NOT EXISTS mls_analysis.games (
     game_id INT PRIMARY KEY,
+    game_date DATE,
     stadium TEXT,
     season_id INT,
-    time_id INT,
     attendance INT
 );
 

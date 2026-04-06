@@ -40,6 +40,21 @@ def venues():
 def census():
     return pg_client.get_census()
 
+@app.get("/seasons")
+def seasons():
+    return pg_client.get_seasons()
+
+@app.get("/teams")
+def teams():
+    return pg_client.get_teams()
+
+@app.get("/games")
+def games():
+    return pg_client.get_games()
+
+@app.get("/game-teams")
+def game_teams():
+    return pg_client.get_game_teams()
 
 def run(host: str = "127.0.0.1", port: int = 8000, reload: bool = True) -> None:
     uvicorn.run(app, host=host, port=port, reload=reload)

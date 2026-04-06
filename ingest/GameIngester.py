@@ -14,8 +14,8 @@ class GameIngester(Ingester):
 
     def __init__(self):
         super().__init__()
-        self.start = datetime(2025, 2, 1)
-        self.end = datetime(2025, 12, 31)
+        self.start = datetime(2026, 2, 1)
+        self.end = datetime(2026, 12, 31)
 
     @override
     def ingest(self) -> None:
@@ -52,11 +52,9 @@ class GameIngester(Ingester):
         game_teams_rows = []
         teams_rows = []
         seasons_rows = []
-        time_rows = []
 
         seen_teams = set()
         seen_seasons = set()
-        seen_time = set()
 
         for g in games:
             comp = g["competitions"][0]
@@ -69,9 +67,6 @@ class GameIngester(Ingester):
             season_type = g["season"]["slug"]
 
             game_date = g["date"][:10]
-            dt = datetime.strptime(game_date, "%Y-%m-%d")
-
-            time_id = int(dt.strftime("%Y%m%d"))
 
             stadium_name = comp["venue"]["fullName"]
             attendance = comp.get("attendance")
@@ -81,7 +76,7 @@ class GameIngester(Ingester):
                 "game_id": game_id,
                 "stadium": stadium_name,
                 "season_id": season_id,
-                "time_id": time_id,
+                "game_date": game_date,
                 "attendance": attendance
             })
 
@@ -93,18 +88,6 @@ class GameIngester(Ingester):
                     "season_type": season_type
                 })
                 seen_seasons.add(season_id)
-
-            # ---- Time ----
-            if time_id not in seen_time:
-                time_rows.append({
-                    "time_id": time_id,
-                    "game_date": game_date,
-                    "year": dt.year,
-                    "month": dt.month,
-                    "day": dt.day,
-                    "weekday": dt.strftime("%A")
-                })
-                seen_time.add(time_id)
 
             # ---- Teams + Game_Teams ----
             for team, side in [(home, "home"), (away, "away")]:
