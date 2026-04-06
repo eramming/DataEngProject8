@@ -51,7 +51,7 @@ class CensusIngester(Ingester):
             "B01001_001E": "population",
             "B19013_001E": "median_income",
             "B15003_022E": "education",
-            "B01002_001E": "age",
+            "B01002_001E": "median_age",
             "B23025_005E": "unemployment"
         }, inplace=True)
 
@@ -71,7 +71,7 @@ class CensusIngester(Ingester):
             regex=True
         )
 
-        numeric_cols = ["population", "median_income", "education", "age", "unemployment"]
+        numeric_cols = ["population", "median_income", "education", "median_age", "unemployment"]
         for col in numeric_cols:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
@@ -84,7 +84,7 @@ class CensusIngester(Ingester):
             "population",
             "median_income",
             "education",
-            "age",
+            "median_age",
             "unemployment"
         ]]
 

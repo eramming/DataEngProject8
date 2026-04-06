@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS mls_analysis.venues (
     lat REAL,
     lon REAL,
     stadium TEXT NOT NULL
+    capacity INTEGER
 );
 
