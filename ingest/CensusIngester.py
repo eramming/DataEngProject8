@@ -44,7 +44,6 @@ class CensusIngester(Ingester):
     def transform(self, data_json) -> pd.DataFrame:
         columns = data_json[0]
         data = data_json[1:]
-
         df = pd.DataFrame(data, columns=columns)
 
         df.rename(columns={
@@ -52,45 +51,43 @@ class CensusIngester(Ingester):
             "B19013_001E": "median_income",
             "B15003_022E": "education",
             "B01002_001E": "median_age",
-            "B23025_005E": "unemployment"
+            "B23025_005E": "unemployment",
+            "state": "state_code"
         }, inplace=True)
 
         split_cols = df["NAME"].str.split(",", n=1, expand=True)
         df["city"] = split_cols[0].str.strip()
         df["state"] = split_cols[1].str.strip()
 
-        # clean city names a bit for better consistency
         df["city"] = df["city"].str.replace(
-            r"\s+(city|town|village|borough|CDP|municipality)$",
-            "",
-            regex=True
+            r"\s+(city|town|village|borough|CDP|municipality)$", "", regex=True
         )
         df["city"] = df["city"].str.replace(
-            r"\s+(metro township|unified government)$",
-            "",
-            regex=True
+            r"\s+(metro township|unified government)$", "", regex=True
         )
 
         numeric_cols = ["population", "median_income", "education", "median_age", "unemployment"]
         for col in numeric_cols:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
-        df = df.dropna(subset=["city", "state"])
-        df = df.drop_duplicates(subset=["city", "state"])
+        df = df.dropna(subset=["city", "state", "state_code"])
+        df = df.drop_duplicates(subset=["city", "state_code"])
 
-        df = df[[
-            "city",
-            "state",
-            "population",
-            "median_income",
-            "education",
-            "median_age",
-            "unemployment"
-        ]]
+        df = df[
+            [
+                "city",
+                "state",
+                "state_code",
+                "population",
+                "median_income",
+                "education",
+                "median_age",
+                "unemployment",
+            ]
+        ]
 
         print(df.head())
         print(f"Cleaned census rows: {len(df)}")
-
         return df
 
     # -----------------------------
