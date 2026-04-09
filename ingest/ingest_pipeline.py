@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-INIT_SQL_FILE = BASE_DIR / "sql" / "initialize.sql"
+INIT_SQL_FILE = BASE_DIR / "ingest" / "sql" / "initialize.sql"
 
 class IngestPipeline:
 

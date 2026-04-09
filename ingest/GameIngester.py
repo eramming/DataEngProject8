@@ -6,8 +6,8 @@ from Ingester import Ingester
 import io
 
 
-GAMES_CREATE = "sql/games_create.sql"
-GAMES_INSERT = "sql/games_insert.sql"
+GAMES_CREATE = "ingest/sql/games_create.sql"
+GAMES_INSERT = "ingest/sql/games_insert.sql"
 
 
 class GameIngester(Ingester):
