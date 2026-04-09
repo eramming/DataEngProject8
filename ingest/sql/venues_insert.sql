@@ -5,17 +5,17 @@ CREATE TEMP TABLE staging_venues (
     state TEXT NOT NULL,
     lat REAL,
     lon REAL,
-    stadium TEXT NOT NULL
+    stadium TEXT NOT NULL,
     capacity INTEGER
 );
 
-COPY staging_venues (team, city, state, lat, lon, stadium)
+COPY staging_venues (team, city, state, lat, lon, stadium, capacity)
 FROM STDIN
 WITH (FORMAT CSV, HEADER TRUE);
 
 
 
-INSERT INTO mls_analysis.venues (team, city, state, lat, lon, stadium)
-SELECT team, city, state, lat, lon, stadium
+INSERT INTO mls_analysis.venues (team, city, state, lat, lon, stadium, capacity)
+SELECT team, city, state, lat, lon, stadium, capacity
 FROM staging_venues
 ON CONFLICT (team) DO NOTHING;

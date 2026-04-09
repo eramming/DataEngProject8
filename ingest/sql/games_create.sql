@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS mls_analysis.teams (
 
 CREATE TABLE IF NOT EXISTS mls_analysis.games (
     game_id INT PRIMARY KEY,
-    game_date DATE,
     stadium TEXT,
     season_id INT,
+    game_date DATE,
     attendance INT
 );
 

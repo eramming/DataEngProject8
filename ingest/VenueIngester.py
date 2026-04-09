@@ -29,7 +29,7 @@ class VenueIngester(Ingester):
         print(df.head())
         df = df.drop(columns=["joined", "head_coach", "url", 
                          "wikipedia_url", "logo_url"])
-        df = df.rename({
+        df = df.rename(columns={
             "latitude": "lat", 
             "longitude": "lon",
             "stadium_capacity": "capacity"

@@ -39,7 +39,6 @@ services:
       - .:/opt/sportsapp
     command: >
       bash -c "airflow db init &&
-               sleep 5 &&  # Wait for the database to be ready
                airflow users create
                --username admin
                --password admin

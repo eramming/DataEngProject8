@@ -1,4 +1,4 @@
-from anyio import Path
+from pathlib import Path
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
@@ -13,17 +13,18 @@ GAMES_INSERT = BASE_DIR / "sql" / "games_insert.sql"
 
 class GameIngester(Ingester):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, conn):
+        self.conn = conn
+        self.cur = conn.cursor()
         self.start = datetime(2026, 2, 1)
-        self.end = datetime(2026, 12, 31)
+        self.end = datetime(2026, 5, 31)
 
     @override
     def ingest(self) -> None:
         raw_games = self.extract()
         payload = self.transform(raw_games)
         self.load_into_pg(payload)
-        self.conn.close()
+
 
     # -----------------------------
     # 1. Extract
@@ -69,7 +70,7 @@ class GameIngester(Ingester):
 
             game_date = g["date"][:10]
 
-            stadium_name = comp["venue"]["fullName"]
+            stadium_name = comp.get("venue", {}).get("fullName")
             attendance = comp.get("attendance")
 
             # ---- Games ----
@@ -122,7 +123,7 @@ class GameIngester(Ingester):
                     row["winner_flag"] = home_score > away_score
                 else:
                     row["winner_flag"] = away_score > home_score
-
+        
         return {
             "games": pd.DataFrame(games_rows),
             "teams": pd.DataFrame(teams_rows),
