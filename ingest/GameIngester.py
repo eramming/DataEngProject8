@@ -1,3 +1,4 @@
+from anyio import Path
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
@@ -6,9 +7,9 @@ from Ingester import Ingester
 import io
 
 
-GAMES_CREATE = "ingest/sql/games_create.sql"
-GAMES_INSERT = "ingest/sql/games_insert.sql"
-
+BASE_DIR = Path(__file__).resolve().parent
+GAMES_CREATE = BASE_DIR / "sql" / "games_create.sql"
+GAMES_INSERT = BASE_DIR / "sql" / "games_insert.sql"
 
 class GameIngester(Ingester):
 
@@ -126,8 +127,7 @@ class GameIngester(Ingester):
             "games": pd.DataFrame(games_rows),
             "teams": pd.DataFrame(teams_rows),
             "game_teams": pd.DataFrame(game_teams_rows),
-            "seasons": pd.DataFrame(seasons_rows),
-            "time": pd.DataFrame(time_rows)
+            "seasons": pd.DataFrame(seasons_rows)
         }
 
     # -----------------------------

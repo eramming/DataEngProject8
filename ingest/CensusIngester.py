@@ -51,12 +51,8 @@ class CensusIngester(Ingester):
             "B19013_001E": "median_income",
             "B15003_022E": "education",
             "B01002_001E": "median_age",
-<<<<<<< HEAD
-            "B23025_005E": "unemployment"
-=======
             "B23025_005E": "unemployment",
             "state": "state_code"
->>>>>>> origin/airflow-integration
         }, inplace=True)
 
         split_cols = df["NAME"].str.split(",", n=1, expand=True)
@@ -77,17 +73,6 @@ class CensusIngester(Ingester):
         df = df.dropna(subset=["city", "state", "state_code"])
         df = df.drop_duplicates(subset=["city", "state_code"])
 
-<<<<<<< HEAD
-        df = df[[
-            "city",
-            "state",
-            "population",
-            "median_income",
-            "education",
-            "median_age",
-            "unemployment"
-        ]]
-=======
         df = df[
             [
                 "city",
@@ -100,7 +85,6 @@ class CensusIngester(Ingester):
                 "unemployment",
             ]
         ]
->>>>>>> origin/airflow-integration
 
         print(df.head())
         print(f"Cleaned census rows: {len(df)}")
