@@ -16,8 +16,8 @@ class GameIngester(Ingester):
     def __init__(self, conn):
         self.conn = conn
         self.cur = conn.cursor()
-        self.start = datetime(2026, 2, 1)
-        self.end = datetime(2026, 5, 31)
+        self.start = datetime(2026, 2, 1).date()
+        self.end = datetime.now().date()
 
     @override
     def ingest(self) -> None:

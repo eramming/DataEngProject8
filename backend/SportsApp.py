@@ -56,6 +56,10 @@ def games():
 def game_teams():
     return pg_client.get_game_teams()
 
+@app.get("/view")
+def game_view():
+    return pg_client.get_game_view()
+
 def run(host: str = "0.0.0.0", port: int = 8000, reload: bool = True) -> None:
     uvicorn.run(app, host=host, port=port, reload=reload)
 

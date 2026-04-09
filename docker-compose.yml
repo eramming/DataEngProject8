@@ -30,10 +30,13 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://jhu:jhu123@postgres:5432/jhu
+      AIRFLOW__LOGGING__REMOTE_LOGGING: "False"
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
     ports:
       - "8080:8080"
     volumes:
       - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
       - .:/opt/sportsapp
     command: webserver
 
@@ -44,8 +47,11 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://jhu:jhu123@postgres:5432/jhu
+      AIRFLOW__LOGGING__REMOTE_LOGGING: "False"
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
     volumes:
       - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
       - .:/opt/sportsapp
     command: scheduler
 
