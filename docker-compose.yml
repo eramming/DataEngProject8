@@ -10,62 +10,55 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  sportsapp:
-    build: .
-    image: sportsapp:latest
-    environment:
-      HOST: 0.0.0.0
-      PORT: 8000
-    ports:
-      - "8000:8000"
+  airflow-init:
+    image: apache/airflow:2.9.3
     depends_on:
       - postgres
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://jhu:jhu123@postgres:5432/jhu
+    entrypoint: >
+      bash -c "
+      airflow db init &&
+      airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com || true"
+    restart: "no"
 
   airflow-webserver:
     image: apache/airflow:2.9.3
     depends_on:
-      - postgres
+      - airflow-init
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://jhu:jhu123@postgres:5432/jhu
-      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
-      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
     ports:
       - "8080:8080"
     volumes:
       - ./airflow/dags:/opt/airflow/dags
-      - ./airflow/logs:/opt/airflow/logs
-      - ./airflow/plugins:/opt/airflow/plugins
       - .:/opt/sportsapp
-    command: >
-      bash -c "airflow db init &&
-               airflow users create
-               --username admin
-               --password admin
-               --firstname Rohan
-               --lastname User
-               --role Admin
-               --email rohan@example.com || true &&
-               airflow webserver"
+    command: webserver
 
   airflow-scheduler:
     image: apache/airflow:2.9.3
     depends_on:
-      - postgres
-      - airflow-webserver
+      - airflow-init
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://jhu:jhu123@postgres:5432/jhu
-      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
-      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
     volumes:
       - ./airflow/dags:/opt/airflow/dags
-      - ./airflow/logs:/opt/airflow/logs
-      - ./airflow/plugins:/opt/airflow/plugins
       - .:/opt/sportsapp
+    command: scheduler
+
+  sportsapp:
+    build: .
+    image: sportsapp:latest
+    entrypoint: []
     command: >
-      bash -c "pip install psycopg2-binary &&
-               airflow scheduler"
+      uvicorn backend.SportsApp:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
 
 volumes:
   pgdata:
