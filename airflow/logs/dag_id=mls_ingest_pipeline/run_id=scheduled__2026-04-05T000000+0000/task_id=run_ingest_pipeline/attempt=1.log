@@ -78,3 +78,70 @@
 [2026-04-12T15:17:06.598+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 0
 [2026-04-12T15:17:06.610+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
 [2026-04-12T15:17:06.614+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
+[2026-04-12T15:21:19.754+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-04-12T15:21:19.775+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: mls_ingest_pipeline.run_ingest_pipeline scheduled__2026-04-05T00:00:00+00:00 [queued]>
+[2026-04-12T15:21:19.780+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: mls_ingest_pipeline.run_ingest_pipeline scheduled__2026-04-05T00:00:00+00:00 [queued]>
+[2026-04-12T15:21:19.780+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2026-04-12T15:21:19.789+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): run_ingest_pipeline> on 2026-04-05 00:00:00+00:00
+[2026-04-12T15:21:19.793+0000] {standard_task_runner.py:64} INFO - Started process 54 to run task
+[2026-04-12T15:21:19.796+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'mls_ingest_pipeline', 'run_ingest_pipeline', 'scheduled__2026-04-05T00:00:00+00:00', '--job-id', '2', '--raw', '--subdir', 'DAGS_FOLDER/mls_ingest_dag.py', '--cfg-path', '/tmp/tmpnpqg71kp']
+[2026-04-12T15:21:19.797+0000] {standard_task_runner.py:91} INFO - Job 2: Subtask run_ingest_pipeline
+[2026-04-12T15:21:19.857+0000] {task_command.py:426} INFO - Running <TaskInstance: mls_ingest_pipeline.run_ingest_pipeline scheduled__2026-04-05T00:00:00+00:00 [running]> on host 77ebc2a18c58
+[2026-04-12T15:21:19.931+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='rohan' AIRFLOW_CTX_DAG_ID='mls_ingest_pipeline' AIRFLOW_CTX_TASK_ID='run_ingest_pipeline' AIRFLOW_CTX_EXECUTION_DATE='2026-04-05T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-05T00:00:00+00:00'
+[2026-04-12T15:21:19.932+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-04-12T15:21:19.957+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-04-12T15:21:19.958+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/sportsapp && python3 ingest/ingest_pipeline.py']
+[2026-04-12T15:21:19.966+0000] {subprocess.py:86} INFO - Output:
+[2026-04-12T15:21:24.810+0000] {subprocess.py:93} INFO - Schema creation sql: CREATE SCHEMA IF NOT EXISTS mls_analysis;
+[2026-04-12T15:21:24.811+0000] {subprocess.py:93} INFO -                 team  ...                                           logo_url
+[2026-04-12T15:21:24.811+0000] {subprocess.py:93} INFO - 0  Atlanta United FC  ...  https://upload.wikimedia.org/wikipedia/en/thum...
+[2026-04-12T15:21:24.811+0000] {subprocess.py:93} INFO - 1          Austin FC  ...  https://upload.wikimedia.org/wikipedia/en/thum...
+[2026-04-12T15:21:24.811+0000] {subprocess.py:93} INFO - 2        CF Montréal  ...  https://upload.wikimedia.org/wikipedia/en/thum...
+[2026-04-12T15:21:24.812+0000] {subprocess.py:93} INFO - 3       Charlotte FC  ...  https://upload.wikimedia.org/wikipedia/en/thum...
+[2026-04-12T15:21:24.812+0000] {subprocess.py:93} INFO - 4    Chicago Fire FC  ...  https://upload.wikimedia.org/wikipedia/commons...
+[2026-04-12T15:21:24.812+0000] {subprocess.py:93} INFO - 
+[2026-04-12T15:21:24.812+0000] {subprocess.py:93} INFO - [5 rows x 12 columns]
+[2026-04-12T15:21:24.813+0000] {subprocess.py:93} INFO - Total census rows pulled: 32330
+[2026-04-12T15:21:24.813+0000] {subprocess.py:93} INFO -          city    state  ... median_age  unemployment
+[2026-04-12T15:21:24.813+0000] {subprocess.py:93} INFO - 0      Abanda  Alabama  ...       24.5             0
+[2026-04-12T15:21:24.813+0000] {subprocess.py:93} INFO - 1   Abbeville  Alabama  ...       51.2            58
+[2026-04-12T15:21:24.814+0000] {subprocess.py:93} INFO - 2  Adamsville  Alabama  ...       41.1            42
+[2026-04-12T15:21:24.814+0000] {subprocess.py:93} INFO - 3     Addison  Alabama  ...       41.5             0
+[2026-04-12T15:21:24.814+0000] {subprocess.py:93} INFO - 4       Akron  Alabama  ...       39.8            14
+[2026-04-12T15:21:24.814+0000] {subprocess.py:93} INFO - 
+[2026-04-12T15:21:24.815+0000] {subprocess.py:93} INFO - [5 rows x 8 columns]
+[2026-04-12T15:21:24.815+0000] {subprocess.py:93} INFO - Cleaned census rows: 32213
+[2026-04-12T15:21:24.815+0000] {subprocess.py:93} INFO - Traceback (most recent call last):
+[2026-04-12T15:21:24.815+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/ingest_pipeline.py", line 48, in <module>
+[2026-04-12T15:21:24.815+0000] {subprocess.py:93} INFO -     main()
+[2026-04-12T15:21:24.816+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/ingest_pipeline.py", line 45, in main
+[2026-04-12T15:21:24.816+0000] {subprocess.py:93} INFO -     IngestPipeline().ingest_all()
+[2026-04-12T15:21:24.816+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/ingest_pipeline.py", line 33, in ingest_all
+[2026-04-12T15:21:24.816+0000] {subprocess.py:93} INFO -     ingester.ingest()
+[2026-04-12T15:21:24.817+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/CensusIngester.py", line 28, in ingest
+[2026-04-12T15:21:24.817+0000] {subprocess.py:93} INFO -     self.load_into_pg(payload)
+[2026-04-12T15:21:24.817+0000] {subprocess.py:93} INFO -   File "/opt/sportsapp/ingest/CensusIngester.py", line 105, in load_into_pg
+[2026-04-12T15:21:24.818+0000] {subprocess.py:93} INFO -     self.cur.copy_expert(f.read(), buffer)
+[2026-04-12T15:21:24.818+0000] {subprocess.py:93} INFO - psycopg2.errors.UndefinedColumn: column "education" of relation "staging_census" does not exist
+[2026-04-12T15:21:24.819+0000] {subprocess.py:93} INFO - 
+[2026-04-12T15:21:24.902+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2026-04-12T15:21:24.903+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-04-12T15:21:24.912+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 243, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-04-12T15:21:24.915+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=mls_ingest_pipeline, task_id=run_ingest_pipeline, run_id=scheduled__2026-04-05T00:00:00+00:00, execution_date=20260405T000000, start_date=20260412T152119, end_date=20260412T152124
+[2026-04-12T15:21:24.927+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 2 for task run_ingest_pipeline (Bash command failed. The command returned a non-zero exit code 1.; 54)
+[2026-04-12T15:21:24.935+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2026-04-12T15:21:24.949+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-04-12T15:21:24.952+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

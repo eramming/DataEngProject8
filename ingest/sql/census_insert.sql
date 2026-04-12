@@ -15,7 +15,7 @@ COPY staging_census (
     state_code,
     population,
     median_income,
-    education,
+    bachelor_degree_or_higher,
     median_age,
     unemployment
 )
