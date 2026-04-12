@@ -55,11 +55,14 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - .:/opt/sportsapp
-    command: bash -c "sleep 20 && airflow dags trigger mls_ingest_pipeline || true && airflow scheduler"
+    command: scheduler
 
   sportsapp:
     build: .
     image: sportsapp:latest
+    entrypoint: []
+    command: >
+      uvicorn backend.SportsApp:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
     depends_on:
