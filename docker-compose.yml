@@ -53,7 +53,7 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - .:/opt/sportsapp
-    command: scheduler
+    command: bash -c "sleep 20 && airflow dags trigger mls_ingest_pipeline || true && airflow scheduler"
 
   sportsapp:
     build: .

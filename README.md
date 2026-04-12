@@ -49,7 +49,7 @@ To launch:
 
 `docker compose up -d`
 
-DAG will run ingest pipeline, but run this for manual ingestion:
+DAG will run ingest pipeline weekly, but run this for manual ingestion:
 
 `docker compose exec airflow-webserver airflow dags trigger mls_ingest_pipeline` 
 
