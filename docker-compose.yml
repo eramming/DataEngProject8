@@ -30,6 +30,7 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://jhu:jhu123@postgres:5432/jhu
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
       AIRFLOW__LOGGING__REMOTE_LOGGING: "False"
       AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
     ports:
@@ -47,6 +48,7 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://jhu:jhu123@postgres:5432/jhu
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
       AIRFLOW__LOGGING__REMOTE_LOGGING: "False"
       AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
     volumes:
