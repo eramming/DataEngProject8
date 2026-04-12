@@ -13,8 +13,7 @@ Quick summary of what we will do:
 2. Install necessary packages into our Python virtual environment
 3. Enter our virtual environment
 4. Launch any supporting services, like a database.
-5. Run the pipeline (currently just a manual process, maybe automate with scheduling later if required)
-6. Launch our server (to be able to see what exists in our db) 
+5. Launch our server (to be able to see what exists in our db) 
 
 Install `pipenv` virtual environment manager. It's just a different flavor of `pip`.
 
@@ -31,11 +30,6 @@ Enter your python virtual environment.
 Launch supporting services.
 
 `docker compose -f docker-compose-dev.yml up -d`
-
-Kickoff pipeline.
-
-`cd ingest`
-`python ingest_pipeline.py`
 
 Launch the server. It auto-restarts when you make changes.
 
