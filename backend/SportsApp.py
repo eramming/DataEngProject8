@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from logging import Logger, getLogger, INFO, basicConfig
 import argparse, uvicorn
-from PostgresClient import PostgresClient
+from backend.PostgresClient import PostgresClient
 
 basicConfig(
     level=INFO,
@@ -56,12 +56,16 @@ def games():
 def game_teams():
     return pg_client.get_game_teams()
 
-def run(host: str = "127.0.0.1", port: int = 8000, reload: bool = True) -> None:
+@app.get("/view")
+def game_view():
+    return pg_client.get_game_view()
+
+def run(host: str = "0.0.0.0", port: int = 8000, reload: bool = True) -> None:
     uvicorn.run(app, host=host, port=port, reload=reload)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run Clue-Less Backend")
-    parser.add_argument("--host", "-H", default="127.0.0.1", help="Host to Serve on")
+    parser.add_argument("--host", "-H", default="0.0.0.0", help="Host to Serve on")
     parser.add_argument("--port", "-p", type=int, default=8000, help="Port to Serve on")
     parser.add_argument("--no-reload", action="store_true", help="Disable auto-reload")
     args = parser.parse_args()
