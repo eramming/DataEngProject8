@@ -45,10 +45,18 @@ To exit/shutdown.
 `exit` to exit virtual environment
 
 ### Production Mode
-To launch.
+To launch:
 
 `docker compose up -d`
 
-To exit.
+To view available endpoints, run: 
+
+`http://localhost:8000/docs` 
+
+To see a combined view of our underlying Postgres tables, run: 
+
+`http://localhost:8000/view` 
+
+To exit:
 
 `docker compose down`

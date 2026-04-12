@@ -49,7 +49,7 @@ class CensusIngester(Ingester):
         df.rename(columns={
             "B01001_001E": "population",
             "B19013_001E": "median_income",
-            "B15003_022E": "education",
+            "B15003_022E": "bachelor_degree_or_higher",
             "B01002_001E": "median_age",
             "B23025_005E": "unemployment",
             "state": "state_code"
@@ -66,7 +66,7 @@ class CensusIngester(Ingester):
             r"\s+(metro township|unified government)$", "", regex=True
         )
 
-        numeric_cols = ["population", "median_income", "education", "median_age", "unemployment"]
+        numeric_cols = ["population", "median_income", "bachelor_degree_or_higher", "median_age", "unemployment"]
         for col in numeric_cols:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
@@ -80,7 +80,7 @@ class CensusIngester(Ingester):
                 "state_code",
                 "population",
                 "median_income",
-                "education",
+                "bachelor_degree_or_higher",
                 "median_age",
                 "unemployment",
             ]

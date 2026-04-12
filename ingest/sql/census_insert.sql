@@ -4,7 +4,7 @@ CREATE TEMP TABLE staging_census (
     state_code TEXT NOT NULL,
     population INTEGER,
     median_income REAL,
-    education REAL,
+    bachelor_degree_or_higher REAL,
     median_age REAL,
     unemployment REAL
 );
@@ -28,7 +28,7 @@ INSERT INTO mls_analysis.census (
     state_code,
     population,
     median_income,
-    education,
+    bachelor_degree_or_higher,
     median_age,
     unemployment
 )
@@ -38,7 +38,7 @@ SELECT
     state_code,
     population,
     median_income,
-    education,
+    bachelor_degree_or_higher,
     median_age,
     unemployment
 FROM staging_census

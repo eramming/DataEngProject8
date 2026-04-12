@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS mls_analysis.census (
     state_code TEXT NOT NULL,
     population INTEGER,
     median_income REAL,
-    education REAL,
+    bachelor_degree_or_higher REAL,
     median_age REAL,
     unemployment REAL,
     PRIMARY KEY (city, state_code)
