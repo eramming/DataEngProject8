@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from logging import Logger, getLogger, INFO, basicConfig
 import argparse, uvicorn
-from PostgresClient import PostgresClient
+from backend.PostgresClient import PostgresClient
 
 basicConfig(
     level=INFO,

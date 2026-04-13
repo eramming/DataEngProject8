@@ -13,10 +13,10 @@ python ingest/ingest_pipeline.py
 # running on different available CPUs
 # But, FastAPI is an ASGI server. Uvicorn speaks ASGI, gunicorn doesn't.
 # So, we use gunicorn with Uvicorn workers.
-cd backend
+# cd backend
 exec gunicorn \
     -k uvicorn.workers.UvicornWorker \
-    SportsApp:app \
+    backend.SportsApp:app \
     --bind "${HOST:-0.0.0.0}:${PORT:-8000}" \
     --workers "${WORKERS:-2}" \
     "$@"
