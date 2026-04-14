@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:17
     environment:
       POSTGRES_USER: jhu
       POSTGRES_PASSWORD: jhu123
@@ -12,7 +12,9 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   airflow-init:
-    image: apache/airflow:2.10.0
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
     depends_on:
       - postgres
     environment:
@@ -25,7 +27,9 @@ services:
     restart: "no"
 
   airflow-webserver:
-    image: apache/airflow:2.10.0
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
     depends_on:
       - airflow-init
     environment:
@@ -37,13 +41,13 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./airflow/dags:/opt/airflow/dags
-      - ./airflow/logs:/opt/airflow/logs
-      - .:/opt/sportsapp
+      - airflow_logs:/opt/airflow/logs
     command: webserver
 
   airflow-scheduler:
-    image: apache/airflow:2.10.0
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
     depends_on:
       - airflow-init
     environment:
@@ -53,14 +57,13 @@ services:
       AIRFLOW__LOGGING__REMOTE_LOGGING: "False"
       AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
     volumes:
-      - ./airflow/dags:/opt/airflow/dags
-      - ./airflow/logs:/opt/airflow/logs
-      - .:/opt/sportsapp
+      - airflow_logs:/opt/airflow/logs
     command: scheduler
 
   sportsapp:
-    build: .
-    image: sportsapp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.sportsapp
     entrypoint: []
     command: >
       uvicorn backend.SportsApp:app --host 0.0.0.0 --port 8000
@@ -71,3 +74,4 @@ services:
 
 volumes:
   pgdata:
+  airflow_logs:

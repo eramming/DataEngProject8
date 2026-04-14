@@ -1,0 +1,21 @@
+FROM apache/airflow:2.10.0
+
+USER root
+
+# Optional OS packages here if you need any
+# RUN apt-get update && apt-get install -y --no-install-recommends ... && rm -rf /var/lib/apt/lists/*
+
+USER airflow
+
+# Optional Python deps used by DAGs or your project
+# COPY requirements-airflow.txt /requirements-airflow.txt
+# RUN pip install --no-cache-dir -r /requirements-airflow.txt
+
+# Copy DAGs into the standard Airflow DAG folder
+COPY --chown=airflow:root airflow/dags/ /opt/airflow/dags/
+
+# Copy your project code in if DAGs import from it
+COPY --chown=airflow:root ingest/ /opt/sportsapp/ingest/
+
+# Make that code importable
+ENV PYTHONPATH=/opt/sportsapp/ingest
