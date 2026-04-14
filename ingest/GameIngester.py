@@ -13,9 +13,8 @@ GAMES_INSERT = BASE_DIR / "sql" / "games_insert.sql"
 
 class GameIngester(Ingester):
 
-    def __init__(self, conn):
-        self.conn = conn
-        self.cur = conn.cursor()
+    def __init__(self):
+        super().__init__()
         self.start = datetime(2026, 2, 1).date()
         self.end = datetime.now().date()
 

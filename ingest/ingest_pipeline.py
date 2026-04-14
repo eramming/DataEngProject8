@@ -24,7 +24,7 @@ class IngestPipeline:
         self.ingesters: List[Ingester] = []
         self.ingesters.append(VenueIngester())
         self.ingesters.append(CensusIngester())
-        self.ingesters.append(GameIngester(self.conn))
+        self.ingesters.append(GameIngester())
 
 
     def ingest_all(self) -> None:
