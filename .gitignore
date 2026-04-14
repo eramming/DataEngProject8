@@ -1,2 +1,4 @@
 .vscode/airflow/logs/
 *.log
+__pycache__/
+*.pyc
